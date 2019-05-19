@@ -105,7 +105,7 @@ void para_suppressprint(para* p, para* q){
       char ptemp[256];
       strncpy(ptemp, p->base[i], strlen(p->base[i])-1);
       printf("%s %50s %s",ptemp, "|", q->base[i]);
-      memset(ptemp,NULL,strlen(ptemp));
+      memset(ptemp,0,strlen(ptemp));
     }
   }
 }
@@ -120,6 +120,6 @@ void para_leftcolumnprint(para* p, para* q){
     }else{
       printf("%s %50s %s", ptemp, "|", q->base[i]);
     }
-    memset(ptemp,NULL,strlen(ptemp));
+    memset(ptemp,0,strlen(ptemp));
   }
 }

@@ -165,13 +165,13 @@ int main(int argc, const char * argv[]) {
   while (p != NULL) {
     qlast = q;
     foundmatch = 0;
-    while (q != NULL && (foundmatch = para_equal(p, q)) == 0) {
+    while (q != NULL && (foundmatch = para_equalPlus(p, q)) == 0) {
       q = para_next(q);
     }
     q = qlast;
 
     if (foundmatch) {
-      while ((foundmatch = para_equal(p, q)) == 0) {
+      while ((foundmatch = para_equalPlus(p, q)) == 0) {
         para_print(q, printright, showsidebyside);
         q = para_next(q);
         qlast = q;
