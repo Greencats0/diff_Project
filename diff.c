@@ -178,11 +178,11 @@ int main(int argc, const char * argv[]) {
       }
       if(showsidebyside && !suppresscommon && !showleftcolumn){
         para_print(q, printboth, showsidebyside);
-      }else if(showsidebyside && showleftcolumn){
+      }else if(showsidebyside && showleftcolumn && !suppresscommon){
         para_leftcolumnprint(p,q);
-      }/*else if(showsidebyside && suppresscommon){ //currently doesnt work :(
-        para_suppressprint(p,q, ignorecase);
-      }*/
+      }else if(showsidebyside && suppresscommon){ //currently doesnt work :(
+        para_suppressprint(p,q);
+      }
       p = para_next(p);
       q = para_next(q);
     } else {

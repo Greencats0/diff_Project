@@ -101,10 +101,11 @@ void para_printfile(char* base[], int count, void (*fp)(const char*, int), int s
 void para_suppressprint(para* p, para* q){
   if (!para_equal(p,q)) { return; }
   for (int i = p->start; i <= p->stop && i != p->filesize; ++i) {
-    if(strcmp(p->base[i],q->base[i])!=0){
+    if(strcmp(p->base[i],q->base[i])==0){
       char ptemp[256];
       strncpy(ptemp, p->base[i], strlen(p->base[i])-1);
       printf("%s %50s %s",ptemp, "|", q->base[i]);
+      memset(ptemp,NULL,strlen(ptemp));
     }
   }
 }
@@ -112,12 +113,13 @@ void para_suppressprint(para* p, para* q){
 void para_leftcolumnprint(para* p, para* q){
   if (!para_equal(p,q) ) { return; }
   for (int i = p->start; i <= p->stop && i != p->filesize; ++i) {
-    char ptemp[strlen(p->base[i])];
+    char ptemp[256];
     strncpy(ptemp, p->base[i], strlen(p->base[i])-1);
     if(strcmp(p->base[i],q->base[i])!=0){
       printf("%s %50s \n",ptemp, "(");
     }else{
       printf("%s %50s %s", ptemp, "|", q->base[i]);
     }
+    memset(ptemp,NULL,strlen(ptemp));
   }
 }
