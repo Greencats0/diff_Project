@@ -28,11 +28,11 @@ size_t para_filesize(para* p);
 size_t para_size(para* p);
 char** para_base(para* p);
 char* para_info(para* p);
-int   para_equal(para* p, para* q);
-int   para_equalPlus(para* p, para* q);
+int   para_equal(para* p, para* q, int ignorecase);
+int   para_equalPlus(para* p, para* q, int ignorecase);
 void para_print(para* p, void (*fp)(const char*, int), int sidebyside);
 void para_printfile(char* base[], int count, void (*fp)(const char*, int), int sidebyside);
-void para_suppressprint(para* p, para* q);
-
+void para_suppressprint(para* p, para* q, int ignorecase);
+void para_leftcolumnprint(para* p, para* q, int ignorecase);
 
 #endif /* para_h */

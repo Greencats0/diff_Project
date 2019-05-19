@@ -55,9 +55,25 @@ void loadfiles(const char* filename1, const char* filename2) {
 
   FILE *fin1 = openfile(filename1, "r");
   FILE *fin2 = openfile(filename2, "r");
-
-  while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }  fclose(fin1);
-  while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }  fclose(fin2);
+  if(!ignorecase){
+    while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) { strings1[count1++] = strdup(buf); }  fclose(fin1);
+    while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) { strings2[count2++] = strdup(buf); }  fclose(fin2);
+  } else {
+    while (!feof(fin1) && fgets(buf, BUFLEN, fin1) != NULL) {
+      for(int i=0;i<BUFLEN;i++){
+        buf[i]=tolower(buf[i]);
+        }
+      strings1[count1++]=strdup(buf);
+    }
+    fclose(fin1);
+    while (!feof(fin2) && fgets(buf, BUFLEN, fin2) != NULL) {
+      for(int i=0;i<BUFLEN;i++){
+        buf[i]=tolower(buf[i]);
+        }
+      strings2[count2++]=strdup(buf);
+    }
+    fclose(fin2);
+  }
 }
 
 void print_option(const char* name, int value) { printf("%17s: %s\n", name, yesorno(value)); }
@@ -148,7 +164,7 @@ int main(int argc, const char * argv[]) {
   if(report_identical || showbrief){
     para* p2 = para_first(strings1, count1);
     para* q2 = para_first(strings2, count2);
-    while (p2 != NULL && q2 != NULL && para_equalPlus(p2, q2) != 0) {
+    while (p2 != NULL && q2 != NULL && para_equalPlus(p2, q2, ignorecase) != 0) {
       q2 = para_next(q2);
       p2 = para_next(p2);
     }
@@ -166,22 +182,24 @@ int main(int argc, const char * argv[]) {
   while (p != NULL) {
     qlast = q;
     foundmatch = 0;
-    while (q != NULL && (foundmatch = para_equal(p, q)) == 0) {
+    while (q != NULL && (foundmatch = para_equal(p, q, ignorecase)) == 0) {
       q = para_next(q);
     }
     q = qlast;
 
     if (foundmatch) {
-      while ((foundmatch = para_equal(p, q)) == 0) {
+      while ((foundmatch = para_equal(p, q, ignorecase)) == 0) {
         para_print(q, printright, showsidebyside);
         q = para_next(q);
         qlast = q;
       }
-      if(showsidebyside && !suppresscommon){
+      if(showsidebyside && !suppresscommon && !showleftcolumn){
         para_print(q, printboth, showsidebyside);
-      }else if(showsidebyside && suppresscommon){
-        para_suppressprint(p,q);
-      }
+      }else if(showsidebyside && showleftcolumn){
+        para_leftcolumnprint(p,q, ignorecase);
+      }/*else if(showsidebyside && suppresscommon){ //currently doesnt work :(
+        para_suppressprint(p,q, ignorecase);
+      }*/
       p = para_next(p);
       q = para_next(q);
     } else {
@@ -193,6 +211,9 @@ int main(int argc, const char * argv[]) {
     para_print(q, printright, showsidebyside);
     q = para_next(q);
   }
-
+  while(p!=NULL){
+    para_print(p,printleft, showsidebyside);
+    p=para_next(p);
+  }
   return 0;
 }

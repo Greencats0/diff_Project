@@ -36,6 +36,8 @@ void printleft(const char* left, int sidebyside) {
     buf[len + j++] = '<';
     buf[len + j++] = '\0';
     printf("%s\n", buf);
+  } else {
+    printf("%s %s", "<", left);
   }
 }
 
@@ -44,7 +46,7 @@ void printright(const char* right, int sidebyside) {
   if(sidebyside){
     printf("%50s %s", ">", right);
   }else{
-    printf("%s %s", ">", right);)
+    printf("%s %s", ">", right);
   }
 }
 
