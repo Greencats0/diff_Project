@@ -6,24 +6,7 @@
 //  Copyright © 2019 William McCarthy. All rights reserved.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define ARGC_ERROR 1
-#define TOOMANYFILES_ERROR 2
-#define CONFLICTING_OUTPUT_OPTIONS 3
-
-#define MAXSTRINGS 1024
-#define MAXPARAS 4096
-
-#define HASHLEN 200
-
-#include "para.h"
-#include "util.h"
-#include "para.c"
-#include "util.c"
-
+#include "diff.h"
 void version(void) {
   printf("\n\n\ndiff (CSUF diffutils) 1.0.0\n");
   printf("Copyright (C) 2014 CSUF\n");
