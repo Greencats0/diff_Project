@@ -27,27 +27,31 @@ void printline(void) {
 }
 
 
-void printleft(const char* left) {
+void printleft(const char* left, int sidebyside) {
   char buf[BUFLEN];
-  
-  strcpy(buf, left);
-  int j = 0, len = (int)strlen(buf) - 1;
-  for (j = 0; j <= 48 - len ; ++j) { buf[len + j] = ' '; }
-  buf[len + j++] = '<';
-  buf[len + j++] = '\0';
-  printf("%s\n", buf);
+  if(sidebyside){
+    strcpy(buf, left);
+    int j = 0, len = (int)strlen(buf) - 1;
+    for (j = 0; j <= 48 - len ; ++j) { buf[len + j] = ' '; }
+    buf[len + j++] = '<';
+    buf[len + j++] = '\0';
+    printf("%s\n", buf);
+  }
 }
 
-void printright(const char* right) {
+void printright(const char* right, int sidebyside) {
   if (right == NULL) { return; }
-  printf("%50s %s", ">", right);
+  if(sidebyside){
+    printf("%50s %s", ">", right);
+  }else{
+    printf("%s %s", ">", right);)
+  }
 }
 
-void printboth(const char* left_right) {
+void printboth(const char* left_right, int sidebyside) {
   char buf[BUFLEN];
   size_t len = strlen(left_right);
   if (len > 0) { strncpy(buf, left_right, len); }
   buf[len - 1] = '\0';
   printf("%-50s %s", buf, left_right);
 }
-

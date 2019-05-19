@@ -31,7 +31,7 @@ void version(void) {
   printf("You may redistribute copies of this program\n");
   printf("under the terms of the GNU General Public License.\n");
   printf("For more information about these matters, see the file named COPYING.\n");
-  printf("Written by William McCarthy, Tony Stark, and Dr. Steven Strange\n");
+  printf("Written by Jake Wong and William McCarthy\n");
 }
 
 void todo_list(void) {
@@ -141,11 +141,27 @@ int main(int argc, const char * argv[]) {
 
 //  para_printfile(strings1, count1, printleft);
 //  para_printfile(strings2, count2, printright);
-
+  int identical = 1;
   para* p = para_first(strings1, count1);
   para* q = para_first(strings2, count2);
   int foundmatch = 0;
-
+  if(report_identical || showbrief){
+    para* p2 = para_first(strings1, count1);
+    para* q2 = para_first(strings2, count2);
+    while (p2 != NULL && q2 != NULL && para_equalPlus(p2, q2) != 0) {
+      q2 = para_next(q2);
+      p2 = para_next(p2);
+    }
+    if(p2==NULL && q2==NULL){
+      if(report_identical){
+        printf("Files %s and %s are identical\n",argv[argc-2],argv[argc-1]);
+      }
+      return 0;
+    } else if(showbrief){
+      printf("Files %s and %s are differ\n",argv[argc-2],argv[argc-1]);
+      return 0;
+    }
+  }
   para* qlast = q;
   while (p != NULL) {
     qlast = q;
@@ -157,20 +173,24 @@ int main(int argc, const char * argv[]) {
 
     if (foundmatch) {
       while ((foundmatch = para_equal(p, q)) == 0) {
-        para_print(q, printright);
+        para_print(q, printright, showsidebyside);
         q = para_next(q);
         qlast = q;
       }
-      para_print(q, printboth);
+      if(showsidebyside && !suppresscommon){
+        para_print(q, printboth, showsidebyside);
+      }else if(showsidebyside && suppresscommon){
+        para_suppressprint(p,q);
+      }
       p = para_next(p);
       q = para_next(q);
     } else {
-      para_print(p, printleft);
+      para_print(p, printleft, showsidebyside);
       p = para_next(p);
     }
   }
   while (q != NULL) {
-    para_print(q, printright);
+    para_print(q, printright, showsidebyside);
     q = para_next(q);
   }
 
