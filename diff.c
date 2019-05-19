@@ -164,7 +164,7 @@ int main(int argc, const char * argv[]) {
   if(report_identical || showbrief){
     para* p2 = para_first(strings1, count1);
     para* q2 = para_first(strings2, count2);
-    while (p2 != NULL && q2 != NULL && para_equalPlus(p2, q2, ignorecase) != 0) {
+    while (p2 != NULL && q2 != NULL && para_equalPlus(p2, q2) != 0) {
       q2 = para_next(q2);
       p2 = para_next(p2);
     }
@@ -182,13 +182,13 @@ int main(int argc, const char * argv[]) {
   while (p != NULL) {
     qlast = q;
     foundmatch = 0;
-    while (q != NULL && (foundmatch = para_equal(p, q, ignorecase)) == 0) {
+    while (q != NULL && (foundmatch = para_equal(p, q)) == 0) {
       q = para_next(q);
     }
     q = qlast;
 
     if (foundmatch) {
-      while ((foundmatch = para_equal(p, q, ignorecase)) == 0) {
+      while ((foundmatch = para_equal(p, q)) == 0) {
         para_print(q, printright, showsidebyside);
         q = para_next(q);
         qlast = q;
@@ -196,7 +196,7 @@ int main(int argc, const char * argv[]) {
       if(showsidebyside && !suppresscommon && !showleftcolumn){
         para_print(q, printboth, showsidebyside);
       }else if(showsidebyside && showleftcolumn){
-        para_leftcolumnprint(p,q, ignorecase);
+        para_leftcolumnprint(p,q);
       }/*else if(showsidebyside && suppresscommon){ //currently doesnt work :(
         para_suppressprint(p,q, ignorecase);
       }*/

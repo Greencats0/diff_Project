@@ -61,33 +61,17 @@ char* para_info(para* p) {
   return buf;  // buf MUST be static
 }
 
-int para_equal(para* p, para* q, int ignorecase) {
+int para_equal(para* p, para* q) {
   if (p == NULL || q == NULL) { return 0; }
   if (para_size(p) != para_size(q)) { return 0; }
   if (p->start >= p->filesize || q->start >= q->filesize) { return 0; }
   int i = p->start, j = q->start, equal = 0;
-  para* p2=p;
-  para* q2=q;
-  /*if(ignorecase){
-    for(int i=0; i<(sizeof p->base)/ (sizeof p->base[0]); i++){
-      char* tmp=p->base[i];
-      for(int j=0; j<strlen(p->base[i]);j++){
-        *tmp++=tolower(p->base[i]);
-      }
-    }
-    for(int i=0; i<(sizeof p->base)/ (sizeof p->base[0]); i++){
-      char* tmp=q->base[i];
-      for(int j=0; j<strlen(q->base[i]);j++){
-        *tmp++=tolower(q->base[i]);
-      }
-    }
-  }*/
   while ((equal = strcmp(p->base[i], q->base[i])) == 0) { ++i; j++;}
   return 1;
 }
 
 //The brief and report_identical didnt work unless i did it this way. SEGMENTATION FAULT CAUSED BY ABOVE METHOD.
-int para_equalPlus(para* p, para* q, int ignorecase) {
+int para_equalPlus(para* p, para* q) {
   if (p == NULL || q == NULL) { return 0; }
   if (para_size(p) != para_size(q)) { return 0; }
   if (p->start >= p->filesize || q->start >= q->filesize) { return 0; }
@@ -114,8 +98,8 @@ void para_printfile(char* base[], int count, void (*fp)(const char*, int), int s
 }
 
 
-void para_suppressprint(para* p, para* q, int ignorecase){
-  if (!para_equal(p,q, ignorecase) ) { return; }
+void para_suppressprint(para* p, para* q){
+  if (!para_equal(p,q)) { return; }
   for (int i = p->start; i <= p->stop && i != p->filesize; ++i) {
     if(strcmp(p->base[i],q->base[i])!=0){
       char ptemp[256];
@@ -125,8 +109,8 @@ void para_suppressprint(para* p, para* q, int ignorecase){
   }
 }
 
-void para_leftcolumnprint(para* p, para* q, int ignorecase){
-  if (!para_equal(p,q,ignorecase) ) { return; }
+void para_leftcolumnprint(para* p, para* q){
+  if (!para_equal(p,q) ) { return; }
   for (int i = p->start; i <= p->stop && i != p->filesize; ++i) {
     char ptemp[strlen(p->base[i])];
     strncpy(ptemp, p->base[i], strlen(p->base[i])-1);
